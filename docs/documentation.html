@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectFlow v8 — Documentação Oficial</title>
+<style>
+  :root {
+    --bg:#fff;--bg2:#f8f8f7;--bg3:#f0f0ee;--tx1:#1a1a18;--tx2:#3a3a36;--tx3:#7a7a72;
+    --ac:#e07050;--bd:#e2e2de;--green:#1a9e5f;--blue:#3b6cdb;--purple:#6c5ce7;
+    --yellow:#c48a0a;--red:#cc3333;--r:8px;--font:'Segoe UI',system-ui,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--tx1);font-size:14px;line-height:1.65}
+  .page-wrap{display:flex;min-height:100vh}
+  aside{width:256px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);
+        position:sticky;top:0;height:100vh;overflow-y:auto;padding:24px 0}
+  main{flex:1;max-width:860px;padding:44px 52px 80px}
+  .nav-brand{padding:0 20px 18px;border-bottom:1px solid var(--bd);margin-bottom:14px}
+  .nav-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .nav-mark{width:32px;height:32px;border-radius:9px;
+            background:linear-gradient(140deg,#e07050,#c84a88);
+            display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .nav-mark svg{width:17px;height:17px;fill:white}
+  .nav-name{font-size:16px;font-weight:800;letter-spacing:-.5px}
+  .nav-name span{color:var(--ac)}
+  .nav-badge{font-size:10px;color:var(--tx3);border:1px solid var(--bd);
+              border-radius:20px;padding:2px 7px;font-weight:700;letter-spacing:.4px}
+  .nav-sec{padding:6px 20px 3px;font-size:10px;font-weight:700;text-transform:uppercase;
+            letter-spacing:.6px;color:var(--tx3);margin-top:10px}
+  .nav-a{display:block;padding:7px 20px;font-size:13px;color:var(--tx2);text-decoration:none;
+          transition:background .12s,color .12s;border-left:3px solid transparent}
+  .nav-a:hover{background:var(--bg3);color:var(--tx1)}
+  .nav-a.active{color:var(--ac);border-left-color:var(--ac);background:#fff5f0;font-weight:600}
+  h1{font-size:30px;font-weight:900;letter-spacing:-.7px;margin-bottom:10px;line-height:1.2}
+  h2{font-size:21px;font-weight:800;letter-spacing:-.4px;margin:48px 0 16px;
+     padding-bottom:9px;border-bottom:2px solid var(--ac);color:var(--tx1)}
+  h3{font-size:15.5px;font-weight:700;margin:28px 0 10px;color:var(--tx1)}
+  p{margin-bottom:13px;color:var(--tx2)}
+  ul,ol{padding-left:20px;margin-bottom:13px}
+  li{margin-bottom:5px;color:var(--tx2)}
+  strong{color:var(--tx1);font-weight:700}
+  code{font-family:'SF Mono','Fira Code',monospace;font-size:12px;background:var(--bg3);
+       padding:2px 6px;border-radius:4px;color:var(--blue);border:1px solid var(--bd)}
+  pre{background:#1e1e1c;color:#d4d4d0;border-radius:var(--r);padding:18px;
+      overflow-x:auto;margin:14px 0;font-size:12.5px;line-height:1.6}
+  pre code{background:none;border:none;color:inherit;padding:0;font-size:inherit}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  hr{border:none;border-top:1px solid var(--bd);margin:32px 0}
+  .hero{background:linear-gradient(135deg,#1a1a18 0%,#2d2d2a 100%);
+        border-radius:12px;padding:32px 38px;margin-bottom:38px;color:#fff}
+  .hero h1{color:#fff;font-size:34px}
+  .hero p{color:#b0b0a8;font-size:15px;margin-bottom:0}
+  .hero-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+  .hero-tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;
+             border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8)}
+  .callout{border-left:4px solid var(--ac);background:#fff4f0;border-radius:0 var(--r) var(--r) 0;
+            padding:13px 16px;margin:18px 0}
+  .callout.info{border-color:var(--blue);background:#eff4ff}
+  .callout.success{border-color:var(--green);background:#f0fdf6}
+  .callout.warn{border-color:var(--yellow);background:#fffbeb}
+  .callout p{margin-bottom:0}
+  .callout-title{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;
+                  color:var(--tx3);margin-bottom:5px}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:18px 0}
+  .card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:16px}
+  .card-icon{font-size:22px;margin-bottom:8px}
+  .card-title{font-size:14px;font-weight:700;color:var(--tx1);margin-bottom:5px}
+  .card-desc{font-size:12px;color:var(--tx3);line-height:1.5}
+  .arch{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:24px;margin:18px 0}
+  .arch-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+  .arch-row:last-child{margin-bottom:0}
+  .arch-node{background:#fff;border:2px solid var(--bd);border-radius:var(--r);padding:10px 14px;
+              text-align:center;font-size:12px;font-weight:700;color:var(--tx1);min-width:130px}
+  .arch-node.fe{border-color:var(--blue);background:#eff4ff;color:var(--blue)}
+  .arch-node.be{border-color:var(--green);background:#f0fdf6;color:var(--green)}
+  .arch-node.ai{border-color:var(--purple);background:#f3efff;color:var(--purple)}
+  .arch-node.db{border-color:var(--yellow);background:#fffbeb;color:var(--yellow)}
+  .arch-arrow{font-size:16px;color:var(--tx3)}
+  .tw{overflow-x:auto;margin:14px 0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:var(--bg3);border:1px solid var(--bd);padding:8px 13px;text-align:left;
+     font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3)}
+  td{border:1px solid var(--bd);padding:8px 13px;vertical-align:top}
+  tr:nth-child(even) td{background:var(--bg2)}
+  .steps{list-style:none;padding:0;counter-reset:s}
+  .steps li{counter-increment:s;display:flex;gap:14px;margin-bottom:14px}
+  .steps li::before{content:counter(s);flex-shrink:0;width:26px;height:26px;border-radius:50%;
+                     background:var(--ac);color:#fff;font-weight:700;font-size:12px;
+                     display:flex;align-items:center;justify-content:center}
+  .sc{flex:1;padding-top:3px}
+  @media(max-width:768px){.page-wrap{flex-direction:column}aside{width:100%;height:auto;position:static}main{padding:24px 18px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<aside>
+  <div class="nav-brand">
+    <div class="nav-logo">
+      <div class="nav-mark"><svg viewBox="0 0 24 24"><rect x="1" y="1" width="9" height="9" rx="2.5"/><rect x="14" y="1" width="9" height="9" rx="2.5"/><rect x="1" y="14" width="9" height="9" rx="2.5"/><rect x="14" y="14" width="9" height="9" rx="2.5"/></svg></div>
+      <div class="nav-name">Project<span>Flow</span></div>
+    </div>
+    <span class="nav-badge">v8 · DOCUMENTAÇÃO</span>
+  </div>
+  <div class="nav-sec">Introdução</div>
+  <a href="#overview" class="nav-a active">Visão Geral</a>
+  <a href="#arch" class="nav-a">Arquitetura</a>
+  <a href="#install" class="nav-a">Instalação & Setup</a>
+  <div class="nav-sec">Módulos</div>
+  <a href="#kanban" class="nav-a">📋 Kanban</a>
+  <a href="#bpmn" class="nav-a">🔄 BPMN & Fluxo</a>
+  <a href="#dashboard" class="nav-a">📊 Dashboard</a>
+  <a href="#diagram" class="nav-a">⬡ Diagramas</a>
+  <a href="#wiki" class="nav-a">📖 Wiki (KB)</a>
+  <a href="#ai-doc" class="nav-a">✦ Doc IA</a>
+  <a href="#docs-module" class="nav-a">🗂 Documentação</a>
+  <a href="#legacy" class="nav-a">🗄 Legados</a>
+  <div class="nav-sec">Backend</div>
+  <a href="#database" class="nav-a">🛢 Banco de Dados</a>
+  <a href="#rls" class="nav-a">🔒 RLS & Segurança</a>
+  <a href="#api" class="nav-a">🔌 APIs & Integrações</a>
+  <a href="#proxy" class="nav-a">🤖 Claude Proxy</a>
+  <div class="nav-sec">Referência</div>
+  <a href="#files" class="nav-a">📁 Estrutura de Arquivos</a>
+  <a href="#roadmap" class="nav-a">🗺 Roadmap</a>
+</aside>
+
+<main>
+
+<div class="hero">
+  <h1>ProjectFlow v8</h1>
+  <p>Sistema de gestão de projetos avançado com Kanban inteligente, IA generativa, diagramas interativos, Wiki colaborativa e integração nativa com Supabase.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Vanilla JS</span>
+    <span class="hero-tag">Supabase + PostgreSQL</span>
+    <span class="hero-tag">BPMN</span>
+    <span class="hero-tag">Claude AI</span>
+    <span class="hero-tag">RLS Multi-tenant</span>
+    <span class="hero-tag">Single-page App</span>
+  </div>
+</div>
+
+<!-- VISÃO GERAL -->
+<section id="overview">
+<h2>Visão Geral</h2>
+<p>O <strong>ProjectFlow v8</strong> é uma aplicação web single-page (SPA) para equipes de desenvolvimento e agências digitais. Integra em uma única interface todas as etapas do ciclo de vida de um projeto: da concepção ao documento executivo entregue ao cliente.</p>
+<p>O diferencial é a fusão entre <strong>Kanban visual</strong> e o modelo de processos <strong>BPMN</strong>, que garante rastreabilidade completa de cada transição de estado. O módulo de <strong>IA Generativa</strong> (Claude API) produz documentação executiva analisando automaticamente o estado atual das tarefas.</p>
+<h3>Capacidades Principais</h3>
+<div class="card-grid">
+  <div class="card"><div class="card-icon">📋</div><div class="card-title">Kanban Multi-projeto</div><div class="card-desc">Colunas dinâmicas, WIP limits, drag-and-drop e sincronização em tempo real.</div></div>
+  <div class="card"><div class="card-icon">🔄</div><div class="card-title">BPMN Integrado</div><div class="card-desc">Cada tarefa tem estado BPMN auditado automaticamente com histórico completo.</div></div>
+  <div class="card"><div class="card-icon">✦</div><div class="card-title">Doc IA (Claude)</div><div class="card-desc">Geração de documentação executiva, análise de riscos e relatórios via IA.</div></div>
+  <div class="card"><div class="card-icon">⬡</div><div class="card-title">Editor de Diagramas</div><div class="card-desc">Canvas SVG interativo para arquitetura, fluxo de dados e BPMN.</div></div>
+  <div class="card"><div class="card-icon">📖</div><div class="card-title">Knowledge Base</div><div class="card-desc">Wiki por projeto com editor block-based (heading, parágrafo, callout, tabela).</div></div>
+  <div class="card"><div class="card-icon">🗂</div><div class="card-title">Banco de Docs</div><div class="card-desc">Consulta centralizada de toda documentação com exportação em PDF executivo.</div></div>
+</div>
+</section>
+
+<!-- ARQUITETURA -->
+<section id="arch">
+<h2>Arquitetura</h2>
+<h3>Visão de Alto Nível</h3>
+<div class="arch">
+  <div class="arch-row">
+    <div class="arch-node fe">Browser (SPA)<br><small>HTML + CSS + JS</small></div>
+    <div class="arch-arrow">⟷</div>
+    <div class="arch-node be">Supabase<br><small>Auth + REST + RLS</small></div>
+    <div class="arch-arrow">⟷</div>
+    <div class="arch-node db">PostgreSQL<br><small>26 tabelas + triggers</small></div>
+  </div>
+  <div class="arch-row">
+    <div class="arch-node fe">JS Modules<br><small>board · core · auth</small></div>
+    <div class="arch-arrow">⟷</div>
+    <div class="arch-node ai">Edge Function<br><small>claude-proxy (Deno)</small></div>
+    <div class="arch-arrow">⟷</div>
+    <div class="arch-node ai">Claude API<br><small>claude-sonnet-4</small></div>
+  </div>
+</div>
+<h3>Decisões de Design</h3>
+<ul>
+  <li><strong>Zero frameworks front-end:</strong> JavaScript vanilla com módulos em arquivos separados. Elimina dependências de build e reduz complexidade.</li>
+  <li><strong>Supabase como BaaS:</strong> Backend completo (auth, banco, RLS, Edge Functions) sem servidor dedicado.</li>
+  <li><strong>Row Level Security:</strong> Segurança imposta no banco de dados via RLS. Mesmo com vulnerabilidade no front-end, dados de outros usuários permanecem inacessíveis.</li>
+  <li><strong>Optimistic UI:</strong> O <code>SyncManager</code> aplica mudanças locais antes da confirmação do servidor — resposta instantânea na interface.</li>
+  <li><strong>BPMN como estado canônico:</strong> <code>bpmn_status</code> é o campo de controle oficial. <code>kanban_col</code> é derivado via trigger, garantindo consistência até em inserções SQL diretas.</li>
+</ul>
+<h3>Camadas da Aplicação</h3>
+<div class="tw"><table>
+  <thead><tr><th>Camada</th><th>Arquivos</th><th>Responsabilidade</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Estado Global</strong></td><td><code>core.js</code></td><td>window.PF, enums BPMN, dados mock, utilitários (toast, modal, uid)</td></tr>
+    <tr><td><strong>Autenticação</strong></td><td><code>auth.js</code></td><td>Login/registro Supabase, modo demo, tema light/dark, session restore</td></tr>
+    <tr><td><strong>Kanban</strong></td><td><code>board.js</code></td><td>Renderização, drag-drop, CRUD de tarefas, SyncManager, dashboard</td></tr>
+    <tr><td><strong>Diagramas</strong></td><td><code>diagram-engine.js</code></td><td>Canvas SVG, nodes/edges, pan/zoom, undo/redo, exportação</td></tr>
+    <tr><td><strong>IA</strong></td><td><code>ai-doc-engine.js</code></td><td>4 chains Claude: contexto → stack → ROI → plano de ação</td></tr>
+    <tr><td><strong>Wiki</strong></td><td><code>knowledge-base.js</code></td><td>Editor block-based por projeto</td></tr>
+    <tr><td><strong>Docs + Anexos</strong></td><td><code>main.js</code></td><td>DocDatabase, AttachmentManager, DiagramViewManager, project CRUD</td></tr>
+    <tr><td><strong>Patches Prod.</strong></td><td><code>pf-producao.js</code></td><td>createProject, selectProject, workspace, normalização UUID — carregado por último</td></tr>
+    <tr><td><strong>Modais</strong></td><td><code>pf-modal.js</code></td><td>Modais programáticos (confirm, prompt, addColumn, deleteCard)</td></tr>
+    <tr><td><strong>Edge Function</strong></td><td><code>claude-proxy/index.ts</code></td><td>Proxy Deno para Claude API — resolve CORS e oculta chave</td></tr>
+  </tbody>
+</table></div>
+</section>
+
+<!-- INSTALAÇÃO -->
+<section id="install">
+<h2>Instalação &amp; Setup</h2>
+<ol class="steps">
+  <li><div class="sc"><strong>Criar projeto Supabase</strong><br>Acesse <a href="https://supabase.com">supabase.com</a>, crie um projeto gratuito e anote a <em>Project URL</em> e a <em>anon/public key</em> em Settings → API.</div></li>
+  <li><div class="sc"><strong>Executar o schema SQL</strong><br>No Supabase, abra <em>SQL Editor</em> e execute <code>sql/producao.sql</code>. O script é idempotente e instala todas as 26 tabelas, ENUMs, triggers, RLS e dados seed.</div></li>
+  <li><div class="sc"><strong>Deploy da Edge Function (para IA)</strong><br><code>supabase functions deploy claude-proxy --no-verify-jwt</code><br>Configure: <code>supabase secrets set ANTHROPIC_API_KEY=sk-ant-...</code></div></li>
+  <li><div class="sc"><strong>Abrir a aplicação</strong><br>Sirva via servidor HTTP estático ou abra <code>index.html</code> diretamente. Na tela de login, clique em <strong>⚙ Configurar Supabase</strong> e insira URL e Key.</div></li>
+  <li><div class="sc"><strong>Seed de teste (opcional)</strong><br>Após fazer login, execute <code>sql/v8_test_seed.sql</code> no SQL Editor para popular o banco com 3 projetos, 12 tarefas, diagrama e docs. Recarregue a página.</div></li>
+</ol>
+<div class="callout info">
+  <div class="callout-title">💡 Modo Demonstração</div>
+  <p>Clique em <strong>Demonstração</strong> na tela de login para testar sem Supabase. Os dados são fictícios e armazenados apenas em memória (perdidos ao fechar a aba).</p>
+</div>
+</section>
+
+<!-- KANBAN -->
+<section id="kanban">
+<h2>📋 Módulo Kanban</h2>
+<p>O Kanban é o módulo central. Cada projeto tem um <strong>board dedicado</strong> com colunas dinâmicas, WIP limits e sincronização em tempo real. Um board padrão é criado automaticamente para cada novo projeto via trigger <code>handle_new_project</code>.</p>
+<h3>Colunas Padrão</h3>
+<div class="tw"><table>
+  <thead><tr><th>Coluna</th><th>BPMN States</th><th>WIP</th></tr></thead>
+  <tbody>
+    <tr><td>Planejado</td><td><code>esbocar</code>, <code>viabilizar</code></td><td>4</td></tr>
+    <tr><td>Prioridade</td><td><code>atribuir</code></td><td>2</td></tr>
+    <tr><td>Em Execução</td><td><code>executar</code></td><td>3</td></tr>
+    <tr><td>Em Revisão</td><td><code>avaliar</code>, <code>corrigir</code>, <code>validar_cliente</code></td><td>3</td></tr>
+    <tr><td>Concluído</td><td><code>concluido</code></td><td>ilimitado</td></tr>
+    <tr><td>Recorrentes</td><td>—</td><td>ilimitado (bloqueado)</td></tr>
+  </tbody>
+</table></div>
+<h3>Roteamento de Cards — Prioridade da Lógica</h3>
+<ol>
+  <li><strong>UUID de coluna</strong> (<code>column_id</code>): se presente e válido, o card aparece <em>exclusivamente</em> nessa coluna.</li>
+  <li><strong>BPMN mapping</strong>: fallback para cards sem UUID (modo demo ou dados legados).</li>
+  <li><strong>Campo <code>col</code></strong>: fallback final para compatibilidade retroativa.</li>
+</ol>
+<h3>SyncManager — Atualizações Otimistas</h3>
+<p>Cada operação de escrita passa pelo <code>SyncManager</code> que: (1) aplica a mudança localmente e re-renderiza, (2) persiste no Supabase em paralelo, (3) faz rollback automático se o servidor retornar erro. O usuário vê a resposta instantânea sem aguardar a rede.</p>
+<h3>Campos de um Card</h3>
+<div class="tw"><table>
+  <thead><tr><th>Campo</th><th>Tipo BD</th><th>Descrição</th></tr></thead>
+  <tbody>
+    <tr><td>Título</td><td>TEXT (≥3 chars)</td><td>Nome da tarefa — obrigatório</td></tr>
+    <tr><td>Status BPMN</td><td>ENUM task_status</td><td>Estado no fluxo — 8 valores possíveis</td></tr>
+    <tr><td>Prioridade</td><td>ENUM priority_level</td><td>low / medium / high / critical</td></tr>
+    <tr><td>Horas estimadas</td><td>NUMERIC(6,2)</td><td>Esforço previsto em horas</td></tr>
+    <tr><td>Orçamento</td><td>NUMERIC(10,2)</td><td>Custo financeiro da tarefa</td></tr>
+    <tr><td>Data de entrega</td><td>DATE</td><td>Deadline com alerta visual se vencida</td></tr>
+    <tr><td>Responsável</td><td>FK → profiles</td><td>Membro atribuído — exibe avatar no card</td></tr>
+    <tr><td>Documentação</td><td>4× TEXT</td><td>Decisão tomada, artefato gerado, riscos, notas</td></tr>
+    <tr><td>Critérios de aceite</td><td>TEXT</td><td>Condições para considerar a tarefa concluída</td></tr>
+    <tr><td>Subtarefas</td><td>tabela subtasks</td><td>Checklist com barra de progresso no card</td></tr>
+    <tr><td>Anexos</td><td>tabela task_attachments</td><td>Arquivos até 25 MB (SQL, PDF, XLSX, etc.)</td></tr>
+    <tr><td>Histórico</td><td>tabela task_history</td><td>Auditoria automática via trigger de BD</td></tr>
+  </tbody>
+</table></div>
+</section>
+
+<!-- BPMN -->
+<section id="bpmn">
+<h2>🔄 BPMN &amp; Fluxo de Status</h2>
+<p>O ProjectFlow implementa um fluxo de 8 etapas que representa o ciclo de vida completo de uma tarefa de desenvolvimento:</p>
+<div class="tw"><table>
+  <thead><tr><th>BPMN</th><th>Label</th><th>Coluna</th><th>Significado</th></tr></thead>
+  <tbody>
+    <tr><td><code>esbocar</code></td><td>Esboçar</td><td>Planejado</td><td>Ideia inicial ainda não viabilizada</td></tr>
+    <tr><td><code>viabilizar</code></td><td>Viabilizar</td><td>Planejado</td><td>Análise de viabilidade técnica e de negócio</td></tr>
+    <tr><td><code>atribuir</code></td><td>Atribuir</td><td>Prioridade</td><td>Priorizada e atribuída a um responsável</td></tr>
+    <tr><td><code>executar</code></td><td>Executar</td><td>Em Execução</td><td>Em desenvolvimento ativo</td></tr>
+    <tr><td><code>avaliar</code></td><td>Avaliar</td><td>Em Revisão</td><td>Code review / QA interno</td></tr>
+    <tr><td><code>corrigir</code></td><td>Corrigir</td><td>Em Revisão</td><td>Correção de bugs da avaliação</td></tr>
+    <tr><td><code>validar_cliente</code></td><td>Validar Cliente</td><td>Em Revisão</td><td>Aprovação final pelo cliente</td></tr>
+    <tr><td><code>concluido</code></td><td>Encerrado</td><td>Concluído</td><td>Tarefa entregue e aceita</td></tr>
+  </tbody>
+</table></div>
+<div class="callout">
+  <div class="callout-title">⚠ Trigger de Consistência</div>
+  <p>O trigger <code>map_bpmn_to_col</code> (BEFORE INSERT OR UPDATE OF bpmn_status) mantém o campo <code>kanban_col</code> sempre sincronizado com <code>bpmn_status</code>, inclusive em inserções SQL diretas. O trigger <code>task_audit</code> (AFTER UPDATE) registra em <code>task_history</code> qualquer mudança de status ou título.</p>
+</div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+<h2>📊 Dashboard</h2>
+<p>Visão analítica em tempo real do projeto selecionado, calculada a partir dos cards carregados em <code>PFBoard.cards</code>.</p>
+<ul>
+  <li><strong>Contadores:</strong> Total, Concluídas, Em Execução, Em Revisão, Bloqueadas, Atrasadas</li>
+  <li><strong>Progresso Geral:</strong> barra animada — concluídas ÷ total × 100%</li>
+  <li><strong>Por Prioridade:</strong> gráfico de barras (critical → high → medium → low)</li>
+  <li><strong>Por Coluna:</strong> distribuição das tarefas em cada estágio</li>
+  <li><strong>Tarefas Ativas:</strong> lista de tarefas em Execução e Revisão, clicáveis</li>
+</ul>
+</section>
+
+<!-- DIAGRAMA -->
+<section id="diagram">
+<h2>⬡ Editor de Diagramas</h2>
+<p>Canvas SVG interativo para criar diagramas de arquitetura, fluxo de dados e BPMN.</p>
+<h3>Tipos de Nós</h3>
+<div class="tw"><table>
+  <thead><tr><th>Tipo</th><th>Forma</th><th>Uso Típico</th></tr></thead>
+  <tbody>
+    <tr><td><code>source</code></td><td>Retângulo azul</td><td>Origem de dados, usuário, sistema externo</td></tr>
+    <tr><td><code>database</code></td><td>Cilindro verde</td><td>Banco de dados, cache, storage</td></tr>
+    <tr><td><code>api</code></td><td>Retângulo ciano</td><td>Endpoint REST, microsserviço</td></tr>
+    <tr><td><code>service</code></td><td>Retângulo laranja</td><td>Worker, função, serviço</td></tr>
+    <tr><td><code>decision</code></td><td>Losango âmbar</td><td>Gateway de decisão BPMN</td></tr>
+    <tr><td><code>actor</code></td><td>Elipse roxa</td><td>Ator, persona, papel</td></tr>
+    <tr><td><code>output</code></td><td>Pílula rosa</td><td>Resultado final, relatório</td></tr>
+    <tr><td><code>custom</code></td><td>Retângulo cinza</td><td>Elemento livre sem semântica</td></tr>
+  </tbody>
+</table></div>
+<h3>Funcionalidades</h3>
+<ul>
+  <li>Drag-and-drop do painel lateral para o canvas</li>
+  <li>Conexões: clique em um anchor (ponto na borda do nó) e arraste</li>
+  <li>Pan: Ctrl+drag | Zoom: scroll do mouse</li>
+  <li>Undo/Redo: Ctrl+Z / Ctrl+Y (histórico de 60 estados)</li>
+  <li>Auto-layout: organiza nós em camadas (esquerda → direita)</li>
+  <li>Auto-geração: cria o diagrama automaticamente a partir das tarefas do projeto</li>
+  <li>Exportação SVG (vetorial) e PNG (2× resolução)</li>
+</ul>
+<h3>Persistência</h3>
+<p>Salvo em <code>project_diagrams.content_json</code> (Supabase) e em <code>localStorage</code> como cache. O carregamento prioriza o Supabase; o cache local serve de fallback.</p>
+</section>
+
+<!-- WIKI -->
+<section id="wiki">
+<h2>📖 Wiki (Knowledge Base)</h2>
+<p>Cada projeto tem uma Wiki dedicada para documentar decisões técnicas, links, atas e qualquer informação relevante. O editor usa um sistema de <strong>blocos</strong> inspirado no Notion.</p>
+<div class="tw"><table>
+  <thead><tr><th>Tipo de Bloco</th><th>ENUM</th><th>Uso</th></tr></thead>
+  <tbody>
+    <tr><td>Título 1/2/3</td><td>heading1/2/3</td><td>Hierarquia de títulos</td></tr>
+    <tr><td>Parágrafo</td><td>paragraph</td><td>Texto corrido</td></tr>
+    <tr><td>Callout</td><td>callout</td><td>Caixa de destaque com ícone emoji</td></tr>
+    <tr><td>Toggle</td><td>toggle</td><td>Bloco expansível/retrátil</td></tr>
+    <tr><td>Divisor</td><td>divider</td><td>Separador horizontal</td></tr>
+    <tr><td>Embed de Tarefa</td><td>embed_task</td><td>Card de tarefa inline na Wiki</td></tr>
+    <tr><td>Tabela</td><td>table</td><td>Tabela editável (JSONB: headers + rows)</td></tr>
+  </tbody>
+</table></div>
+</section>
+
+<!-- DOC IA -->
+<section id="ai-doc">
+<h2>✦ Doc IA (Claude)</h2>
+<p>O módulo Doc IA usa a <strong>Claude API</strong> para gerar documentação executiva completa a partir da análise automática das tarefas do projeto.</p>
+<h3>Pipeline de 4 Chains</h3>
+<ol>
+  <li><strong>Chain A — Contexto &amp; Riscos:</strong> Analisa tarefas, identifica escopo e lacunas de documentação.</li>
+  <li><strong>Chain B — Stack &amp; Arquitetura:</strong> Identifica stack tecnológica, decisões de arquitetura e artefatos.</li>
+  <li><strong>Chain C — ROI &amp; Negócio:</strong> Estima ROI, payback e alinhamento com objetivos de negócio.</li>
+  <li><strong>Chain D — Plano de Ação:</strong> Gera resumo executivo com próximos passos priorizados e blockers.</li>
+</ol>
+<div class="callout warn">
+  <div class="callout-title">Pré-requisito</div>
+  <p>Requer a Edge Function <code>claude-proxy</code> deployada no Supabase com o secret <code>ANTHROPIC_API_KEY</code> configurado. Sem ela, o módulo exibe estado de "Motor não configurado" mas não interfere nos demais módulos.</p>
+</div>
+</section>
+
+<!-- DOCUMENTAÇÃO -->
+<section id="docs-module">
+<h2>🗂 Banco de Documentação</h2>
+<p>Agrega em visão centralizada todos os campos de documentação preenchidos nas tarefas de todos os projetos — um repositório pesquisável de decisões, artefatos e riscos.</p>
+<p>Filtros disponíveis: projeto, seção (Identificação / Execução / Descrição / Documentação / Anexos), status BPMN e busca textual livre.</p>
+<p>O botão <strong>Exportar PDF</strong> gera um documento HTML completo (nova aba, pronto para impressão) com capa, métricas, barra de progresso, diagrama de arquitetura embutido e todas as tarefas documentadas.</p>
+</section>
+
+<!-- LEGADOS -->
+<section id="legacy">
+<h2>🗄 Projetos Legados</h2>
+<p>Projetos com <code>is_legacy = true</code> aparecem no módulo Legados — projetos importados retroativamente (engenharia reversa) que mantêm histórico mas não possuem workflow ativo.</p>
+<pre><code>-- Marcar projeto como legado
+UPDATE public.projects SET is_legacy = true WHERE name = 'Nome do Projeto';</code></pre>
+</section>
+
+<!-- BANCO DE DADOS -->
+<section id="database">
+<h2>🛢 Banco de Dados</h2>
+<h3>Tabelas Principais (26 total)</h3>
+<div class="tw"><table>
+  <thead><tr><th>Tabela</th><th>Destaques</th></tr></thead>
+  <tbody>
+    <tr><td><code>profiles</code></td><td>Coluna <code>initials</code> gerada automaticamente via SQL</td></tr>
+    <tr><td><code>workspaces</code></td><td>Criado automaticamente no primeiro login via trigger</td></tr>
+    <tr><td><code>projects</code></td><td>Trigger AFTER INSERT cria board + 6 colunas + diagrama inicial</td></tr>
+    <tr><td><code>kanban_boards</code></td><td>Um board padrão por projeto — índice único (project_id)</td></tr>
+    <tr><td><code>kanban_columns</code></td><td>Índice único em (board_id, position); bpmn_mapping como TEXT[]</td></tr>
+    <tr><td><code>tasks</code></td><td>Campo central do sistema — 26 colunas com auditoria automática</td></tr>
+    <tr><td><code>task_history</code></td><td>Imutável via RLS — apenas triggers SECURITY DEFINER escrevem</td></tr>
+    <tr><td><code>project_diagrams</code></td><td>content_json (JSONB) armazena nodes + edges do canvas</td></tr>
+    <tr><td><code>knowledge_blocks</code></td><td>Hierarquia via parent_id (auto-referência)</td></tr>
+    <tr><td><code>ai_doc_snapshots</code></td><td>Histórico de todas as gerações de Doc IA com 4 JSONBs</td></tr>
+    <tr><td><code>leads</code></td><td>Campo <code>weighted_value</code> gerado: value × probability / 100</td></tr>
+  </tbody>
+</table></div>
+<h3>Triggers Críticos</h3>
+<div class="tw"><table>
+  <thead><tr><th>Trigger</th><th>Evento</th><th>Função</th></tr></thead>
+  <tbody>
+    <tr><td><code>on_auth_user_created</code></td><td>AFTER INSERT auth.users</td><td>Cria profile + workspace automaticamente</td></tr>
+    <tr><td><code>trg_project_workspace</code></td><td>BEFORE INSERT projects</td><td>Preenche workspace_id se ausente</td></tr>
+    <tr><td><code>trg_project_defaults</code></td><td>AFTER INSERT projects</td><td>Cria board, 6 colunas e diagrama inicial</td></tr>
+    <tr><td><code>auto_map_col</code></td><td>BEFORE INSERT/UPDATE bpmn_status</td><td>Sincroniza kanban_col com bpmn_status</td></tr>
+    <tr><td><code>task_audit</code></td><td>AFTER UPDATE tasks</td><td>Registra mudanças em task_history</td></tr>
+    <tr><td><code>trg_diagrams_upd</code></td><td>BEFORE UPDATE project_diagrams</td><td>Atualiza updated_at automaticamente</td></tr>
+  </tbody>
+</table></div>
+</section>
+
+<!-- RLS -->
+<section id="rls">
+<h2>🔒 RLS &amp; Segurança</h2>
+<p>Todas as 26 tabelas têm RLS habilitado. O modelo de acesso é <strong>ownership + membership</strong>:</p>
+<ul>
+  <li><strong>Projetos:</strong> visível para <code>owner_id</code> e membros em <code>project_members</code></li>
+  <li><strong>Tarefas/Kanban:</strong> visível para membros do projeto pai</li>
+  <li><strong>Perfis:</strong> leitura por todos os usuários autenticados (necessário para atribuição)</li>
+  <li><strong>task_history:</strong> somente leitura via RLS; escrita exclusiva via trigger <code>SECURITY DEFINER</code></li>
+</ul>
+<p>Funções helper <code>is_project_member()</code> e <code>can_write_project()</code> são <code>STABLE SECURITY DEFINER</code> — executam com permissões elevadas mas retornam apenas booleano, evitando recálculo em joins complexos.</p>
+</section>
+
+<!-- API -->
+<section id="api">
+<h2>🔌 APIs &amp; Integrações</h2>
+<h3>Supabase JS Client</h3>
+<p>SDK oficial <code>@supabase/supabase-js@2</code> via CDN. Credenciais em <code>localStorage</code> (<code>pf_sb_url</code> / <code>pf_sb_key</code>).</p>
+<pre><code>// Exemplo: buscar projetos do usuário
+const { data, error } = await PF.supabase
+  .from('projects')
+  .select('id, name, color, status')
+  .order('created_at', { ascending: true });
+if (error) { showToast('Erro: ' + error.message, true); return; }</code></pre>
+<h3>Padrão SyncManager</h3>
+<pre><code>await SyncManager.execute(
+  cardId,        // ID único — previne concorrência
+  () => { /* mutação local otimista */ },
+  async () => { return PF.supabase.from('tasks').update({...}); },
+  () => { /* rollback se servidor retornar erro */ },
+  'Alteração salva com êxito'  // toast de sucesso
+);</code></pre>
+</section>
+
+<!-- PROXY -->
+<section id="proxy">
+<h2>🤖 Claude Proxy (Edge Function)</h2>
+<p>Edge Function Deno que serve como proxy seguro para a Anthropic API, resolvendo CORS e ocultando a chave de API.</p>
+<pre><code>// Localização: supabase/functions/claude-proxy/index.ts
+// Deploy: supabase functions deploy claude-proxy --no-verify-jwt
+// Secret: supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+
+// Chamada do front-end (pf-producao.js)
+const res = await fetch(supabaseUrl + '/functions/v1/claude-proxy', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + supabaseAnonKey,
+    'apikey': supabaseAnonKey
+  },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1500,
+    system: 'Prompt do sistema...',
+    messages: [{ role: 'user', content: '...' }]
+  })
+});</code></pre>
+<div class="callout success">
+  <div class="callout-title">✅ Segurança</div>
+  <p>A <code>ANTHROPIC_API_KEY</code> nunca é exposta ao browser. O proxy valida o JWT do Supabase antes de encaminhar à Anthropic.</p>
+</div>
+</section>
+
+<!-- ARQUIVOS -->
+<section id="files">
+<h2>📁 Estrutura de Arquivos</h2>
+<pre><code>projectflow-v8/
+├── index.html                    # SPA principal — toda a interface HTML
+├── css/
+│   ├── tokens.css                # Design tokens: cores, sombras, espaçamentos
+│   ├── app.css                   # Layout, sidebar, topbar, kanban, toast
+│   ├── v4-styles.css / v7-styles.css   # Refinamentos visuais por versão
+│   ├── docs.css                  # Módulo Documentação
+│   ├── login.css                 # Tela de login e config Supabase
+│   └── project-docs.css          # Wiki / Knowledge Base
+├── js/
+│   ├── core.js                   # Estado global, enums, mock data, utilitários
+│   ├── auth.js                   # Login, logout, tema, session restore
+│   ├── board.js                  # Kanban: renderização, drag-drop, CRUD, dashboard
+│   ├── diagram-engine.js         # Canvas SVG interativo
+│   ├── ai-doc-engine.js          # Pipeline 4-chains Claude
+│   ├── knowledge-base.js         # Wiki editor block-based
+│   ├── docs.js + project-docs.js # Documentação e exportação PDF
+│   ├── main.js                   # AttachmentManager, DocDatabase, DiagramViewManager
+│   ├── v4-modules.js             # CRM pipeline e módulos v4
+│   ├── pf-modal.js               # Modais programáticos
+│   ├── unified-canvas.js         # CanvasMode, AIStrip, SemanticMemory
+│   └── pf-producao.js            # Patches de produção (carregado por último)
+├── sql/
+│   ├── producao.sql              # Schema completo — executar uma vez
+│   └── v8_test_seed.sql          # Dados de exemplo para testes
+├── supabase/functions/
+│   └── claude-proxy/index.ts     # Edge Function Deno
+└── docs/
+    └── documentation.html        # Este documento</code></pre>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+<h2>🗺 Roadmap</h2>
+<ul>
+  <li>🔔 <strong>Realtime:</strong> notificações via Supabase WebSocket subscriptions</li>
+  <li>👥 <strong>Colaboração:</strong> cursores de outros usuários no Kanban e no Diagrama</li>
+  <li>📅 <strong>Timeline / Gantt:</strong> visão baseada em <code>start_date</code> e <code>due_date</code></li>
+  <li>🔁 <strong>Tarefas Recorrentes:</strong> engine de scheduling com <code>recurrence_rule</code> JSONB</li>
+  <li>📊 <strong>CRM Completo:</strong> pipeline visual, gestão de leads, histórico de interações</li>
+  <li>🔗 <strong>Dependências:</strong> relações predecessor/sucessor entre tarefas</li>
+  <li>📱 <strong>PWA:</strong> instalação mobile e modo offline</li>
+  <li>🌐 <strong>i18n:</strong> suporte a inglês, espanhol e outros idiomas</li>
+</ul>
+</section>
+
+<hr>
+<p style="font-size:12px;color:var(--tx3);text-align:center">
+  ProjectFlow v8 — Documentação Oficial &nbsp;·&nbsp; Gerado em Março 2026
+</p>
+
+</main>
+</div>
+<script>
+const secs = document.querySelectorAll('section[id]');
+const navs = document.querySelectorAll('.nav-a');
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      navs.forEach(n => n.classList.remove('active'));
+      const a = document.querySelector('.nav-a[href="#' + e.target.id + '"]');
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.25 });
+secs.forEach(s => obs.observe(s));
+navs.forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const t = document.querySelector(a.getAttribute('href'));
+  if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
+</script>
+</body>
+</html>

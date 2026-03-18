@@ -661,7 +661,8 @@ function initAIDocView(){
 function setCanvasMode(mode){
   if(window.CanvasMode)CanvasMode.set(mode,PF.currentProject);
 }
-function initDiagramView(){DiagramViewManager.init(PF.currentProject||'website');}
+// initDiagramView: versão robusta definida em pf-producao.js seção 28
+function initDiagramView(){if(window.DiagramViewManager)DiagramViewManager.init(PF.currentProject||(window.mockProjects?.[0]?.id)||'website');}
 function regenDiagram(){DiagramViewManager.generate(PF.currentProject||'website');}
 function initDocView(){renderDocDatabase();}
 function openNewProjectModal(){openModal('new-project-overlay');}
@@ -684,70 +685,17 @@ function selectProject(el,id){
 }
 
 // ── createProject ─────────────────────────────────────────────
-// v8-core-fix.js redefine esta função (carregado por último).
-// Este stub nunca deve executar em produção.
-function createProject(){
-  if(typeof window._pf_busy_proj!=='undefined'&&window.createProject!==createProject){
-    window.createProject();
-  }
-}
+// Definida em pf-producao.js (window.createProject). NÃO redeclarar aqui
+// pois isso anularia a implementação real que inclui integração Supabase.
+// Esta linha garante que o binding window.createProject seja preservado.
+// (stub removido — ver pf-producao.js seção 7)
 
 // ── openProjectEdit / saveProjectEdit ─────────────────────────
-function openProjectEdit(id){
-  const proj=(window.mockProjects||[]).find(p=>p.id===id);if(!proj)return;
-  document.getElementById('ep-id').value=id;
-  document.getElementById('ep-name').value=proj.name||'';
-  document.getElementById('ep-desc').value=proj.description||'';
-  document.getElementById('ep-color').value=proj.color||'#e07050';
-  document.getElementById('ep-status').value=proj.status||'active';
-  document.getElementById('ep-client').value=proj.client_name||'';
-  document.getElementById('ep-objective').value=proj.objective||'';
-  openModal('edit-project-overlay');
-}
-
-async function saveProjectEdit(){
-  const id=document.getElementById('ep-id').value;
-  const name=document.getElementById('ep-name').value.trim();
-  if(!name||name.length<2){showToast('Nome deve ter ≥2 caracteres',true);return;}
-  const upd={name,description:document.getElementById('ep-desc').value.trim()||null,
-    color:document.getElementById('ep-color').value,status:document.getElementById('ep-status').value,
-    client_name:document.getElementById('ep-client').value.trim()||null,
-    objective:document.getElementById('ep-objective').value.trim()||null};
-  const proj=(window.mockProjects||[]).find(p=>p.id===id);if(proj)Object.assign(proj,upd);
-  if(PF.supabase&&!PF.demoMode){const{error}=await PF.supabase.from('projects').update(upd).eq('id',id);if(error){showToast('Erro: '+error.message,true);return;}}
-  document.querySelectorAll('.sb-item').forEach(el=>{
-    if(el.dataset.pid===id){
-      const dot=el.querySelector('.sb-project-dot');const lbl=el.querySelector('.sb-item-label');
-      if(dot)dot.style.background=upd.color;if(lbl)lbl.textContent=upd.name;
-    }
-  });
-  if(PF.currentProject===id){const t=document.getElementById('board-title');if(t)t.textContent=upd.name;}
-  closeModal('edit-project-overlay');showToast('Projeto atualizado!','ok');
-}
+// Implementações definitivas em pf-producao.js seções 26-27.
+// Não redeclarar aqui para não sobrescrever as versões corretas.
 
 // ── deleteProject ─────────────────────────────────────────────
-async function deleteProject(id){
-  const proj=(window.mockProjects||[]).find(p=>p.id===id);
-  const ok=await PFModal.deleteProject(proj?.name||id);if(!ok)return;
-  window.mockProjects=(window.mockProjects||[]).filter(p=>p.id!==id);
-  window.mockCards=(window.mockCards||[]).filter(c=>c.project_id!==id&&c.sl!==id);
-  if(PFBoard.cards)PFBoard.cards=PFBoard.cards.filter(c=>c.project_id!==id);
-  if(PF.supabase&&!PF.demoMode)await PF.supabase.from('projects').delete().eq('id',id);
-  document.querySelectorAll('#sb-projects-list .sb-item').forEach(el=>{if(el.dataset.pid===id)el.remove();});
-  if(PF.currentProject===id){
-    PFBoard.cards=[];PFBoard.columns=[];PFBoard.boardId=null;PFBoard.projectId=null;
-    const remaining=window.mockProjects||[];
-    if(remaining.length){
-      const next=remaining[0];
-      const nextEl=document.querySelector(`[data-pid="${next.id}"]`);
-      selectProject(nextEl,next.id);
-    } else {
-      if(typeof renderBoard==='function')renderBoard();
-      const t=document.getElementById('board-title');if(t)t.textContent='—';
-    }
-  }
-  showToast('Projeto excluído');
-}
+// Implementação em pf-producao.js seção 9. Não redeclarar aqui.
 
 // ── createWorkspace ───────────────────────────────────────────
 async function createWorkspace(){
